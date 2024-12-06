@@ -61,31 +61,88 @@
       color: #aaa;
       border-top: 1px solid #444;
     }
+    .search-bar {
+      margin: 20px 0;
+      display: flex;
+      justify-content: center;
+      gap: 10px;
+    }
+    .search-bar input {
+      padding: 10px;
+      font-size: 1.1em;
+      width: 70%;
+      border-radius: 5px;
+      border: 1px solid #444;
+      background: #222;
+      color: #fff;
+    }
+    .search-bar button {
+      padding: 10px 15px;
+      background: #28a745;
+      color: white;
+      border: none;
+      font-size: 1.1em;
+      cursor: pointer;
+      border-radius: 5px;
+    }
+    .search-bar button:hover {
+      background: #218838;
+    }
+    .results {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .results a {
+      color: #007bff;
+      text-decoration: none;
+      font-size: 1.1em;
+    }
+    .results a:hover {
+      text-decoration: underline;
+    }
   </style>
 </head>
 <body>
   <header>
     <h1>World Sound</h1>
   </header>
-  <div class="container">
-    <div class="card">
-      <h3>Effet de Voix 1</h3>
-      <p>Transformez votre voix avec cet effet unique.</p>
-      <button>Activer</button>
-    </div>
-    <div class="card">
-      <h3>Effet de Voix 2</h3>
-      <p>Ajoutez une touche amusante à votre voix.</p>
-      <button>Activer</button>
-    </div>
-    <div class="card">
-      <h3>Effet de Voix 3</h3>
-      <p>Créez une ambiance mystérieuse avec cet effet.</p>
-      <button>Activer</button>
-    </div>
+
+  <div class="search-bar">
+    <input type="text" id="searchInput" placeholder="Rechercher des soundboards...">
+    <button onclick="searchSoundboards()">Rechercher</button>
   </div>
+
+  <div class="results" id="resultsContainer">
+    <!-- Les résultats de recherche s'afficheront ici -->
+  </div>
+
   <footer>
     © 2024 World Sound - Tous droits réservés
   </footer>
+
+  <script>
+    // Fonction pour effectuer la recherche de soundboards
+    function searchSoundboards() {
+      const query = document.getElementById("searchInput").value;
+      const resultsContainer = document.getElementById("resultsContainer");
+      resultsContainer.innerHTML = ''; // Vider les résultats précédents
+
+      if (query.trim() !== "") {
+        const url = `https://www.myinstants.com/en/index/fr/?s=${encodeURIComponent(query)}`;
+        
+        // Ajouter un lien de recherche vers MyInstants
+        const resultItem = document.createElement("a");
+        resultItem.href = url;
+        resultItem.target = "_blank"; // Ouvrir dans un nouvel onglet
+        resultItem.textContent = `Voir les résultats pour "${query}" sur MyInstants`;
+        resultsContainer.appendChild(resultItem);
+      } else {
+        resultsContainer.innerHTML = "<p>Aucun résultat disponible. Veuillez entrer un terme de recherche.</p>";
+      }
+    }
+  </script>
+
 </body>
 </html>
