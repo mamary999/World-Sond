@@ -3,145 +3,89 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>World Sound</title>
+  <title>Connexion</title>
   <style>
     body {
       font-family: Arial, sans-serif;
+      background: #2c3e50;
+      color: #fff;
       margin: 0;
       padding: 0;
-      background: #1a1a1a;
-      color: #fff;
     }
-    header {
-      background: #2c2c2c;
-      padding: 10px 20px;
-      text-align: center;
-      border-bottom: 2px solid #444;
-    }
-    header h1 {
-      margin: 0;
-      font-size: 1.8em;
-    }
-    .container {
+    .login-container {
+      width: 100%;
+      max-width: 400px;
+      margin: 50px auto;
       padding: 20px;
-      display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
-    }
-    .card {
-      background: #333;
-      border: 1px solid #444;
+      background: #34495e;
       border-radius: 8px;
-      width: 300px;
-      padding: 15px;
-      text-align: center;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
     }
-    .card h3 {
-      margin: 10px 0;
-      font-size: 1.4em;
-    }
-    .card button {
-      background: #007bff;
-      color: white;
-      border: none;
-      padding: 10px 15px;
-      font-size: 1em;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-    .card button:hover {
-      background: #0056b3;
-    }
-    footer {
-      margin-top: 20px;
+    .login-container h2 {
       text-align: center;
-      padding: 10px;
-      font-size: 0.9em;
-      color: #aaa;
-      border-top: 1px solid #444;
+      margin-bottom: 20px;
     }
-    .search-bar {
-      margin: 20px 0;
-      display: flex;
-      justify-content: center;
-      gap: 10px;
-    }
-    .search-bar input {
+    .input-field {
+      width: 100%;
       padding: 10px;
-      font-size: 1.1em;
-      width: 70%;
+      margin: 10px 0;
+      border: 1px solid #7f8c8d;
       border-radius: 5px;
-      border: 1px solid #444;
-      background: #222;
+      background: #2c3e50;
       color: #fff;
     }
-    .search-bar button {
-      padding: 10px 15px;
-      background: #28a745;
-      color: white;
+    .input-field:focus {
+      outline: none;
+      border-color: #3498db;
+    }
+    .login-btn {
+      width: 100%;
+      padding: 10px;
+      background: #3498db;
       border: none;
-      font-size: 1.1em;
-      cursor: pointer;
       border-radius: 5px;
+      color: white;
+      font-size: 16px;
+      cursor: pointer;
     }
-    .search-bar button:hover {
-      background: #218838;
+    .login-btn:hover {
+      background: #2980b9;
     }
-    .results {
-      margin-top: 20px;
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .results a {
-      color: #007bff;
-      text-decoration: none;
-      font-size: 1.1em;
-    }
-    .results a:hover {
-      text-decoration: underline;
+    .error-message {
+      color: #e74c3c;
+      text-align: center;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
-  <header>
-    <h1>World Sound</h1>
-  </header>
 
-  <div class="search-bar">
-    <input type="text" id="searchInput" placeholder="Rechercher des soundboards...">
-    <button onclick="searchSoundboards()">Rechercher</button>
+  <div class="login-container">
+    <h2>Connexion</h2>
+    <form id="loginForm">
+      <input type="email" id="email" class="input-field" placeholder="Email" required><br>
+      <input type="password" id="password" class="input-field" placeholder="Mot de passe" required><br>
+      <button type="submit" class="login-btn">Se connecter</button>
+    </form>
+    <div class="error-message" id="errorMessage"></div>
   </div>
-
-  <div class="results" id="resultsContainer">
-    <!-- Les résultats de recherche s'afficheront ici -->
-  </div>
-
-  <footer>
-    © 2024 World Sound - Tous droits réservés
-  </footer>
 
   <script>
-    // Fonction pour effectuer la recherche de soundboards
-    function searchSoundboards() {
-      const query = document.getElementById("searchInput").value;
-      const resultsContainer = document.getElementById("resultsContainer");
-      resultsContainer.innerHTML = ''; // Vider les résultats précédents
-
-      if (query.trim() !== "") {
-        const url = `https://www.myinstants.com/en/index/fr/?s=${encodeURIComponent(query)}`;
-        
-        // Ajouter un lien de recherche vers MyInstants
-        const resultItem = document.createElement("a");
-        resultItem.href = url;
-        resultItem.target = "_blank"; // Ouvrir dans un nouvel onglet
-        resultItem.textContent = `Voir les résultats pour "${query}" sur MyInstants`;
-        resultsContainer.appendChild(resultItem);
+    document.getElementById('loginForm').addEventListener('submit', function(e) {
+      e.preventDefault();
+      
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      
+      // Simuler une connexion (à remplacer par ton backend)
+      if (email === "test@example.com" && password === "password123") {
+        alert("Connexion réussie !");
+        // Rediriger vers la page principale
+        window.location.href = "/index.html";  // Remplacer par la page d'accueil après connexion
       } else {
-        resultsContainer.innerHTML = "<p>Aucun résultat disponible. Veuillez entrer un terme de recherche.</p>";
+        document.getElementById('errorMessage').textContent = "Identifiants incorrects.";
       }
-    }
+    });
   </script>
 
 </body>
