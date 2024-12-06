@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Connexion</title>
+  <title>Connexion / Inscription</title>
   <style>
     body {
       font-family: Arial, sans-serif;
@@ -11,17 +11,20 @@
       color: #fff;
       margin: 0;
       padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
-    .login-container {
-      width: 100%;
-      max-width: 400px;
-      margin: 50px auto;
-      padding: 20px;
+    .container {
       background: #34495e;
+      padding: 20px;
       border-radius: 8px;
       box-shadow: 0 4px 6px rgba(0, 0, 0, 0.3);
+      width: 100%;
+      max-width: 400px;
     }
-    .login-container h2 {
+    .header {
       text-align: center;
       margin-bottom: 20px;
     }
@@ -38,7 +41,7 @@
       outline: none;
       border-color: #3498db;
     }
-    .login-btn {
+    .btn {
       width: 100%;
       padding: 10px;
       background: #3498db;
@@ -48,7 +51,7 @@
       font-size: 16px;
       cursor: pointer;
     }
-    .login-btn:hover {
+    .btn:hover {
       background: #2980b9;
     }
     .error-message {
@@ -56,36 +59,101 @@
       text-align: center;
       margin-top: 10px;
     }
+    .toggle-link {
+      display: block;
+      text-align: center;
+      margin-top: 10px;
+      color: #3498db;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-  <div class="login-container">
-    <h2>Connexion</h2>
-    <form id="loginForm">
-      <input type="email" id="email" class="input-field" placeholder="Email" required><br>
-      <input type="password" id="password" class="input-field" placeholder="Mot de passe" required><br>
-      <button type="submit" class="login-btn">Se connecter</button>
-    </form>
-    <div class="error-message" id="errorMessage"></div>
+  <div class="container" id="formContainer">
+    <div class="header">
+      <h2 id="formTitle">Connexion</h2>
+    </div>
+
+    <!-- Formulaire de Connexion -->
+    <div id="loginForm">
+      <input type="email" id="loginEmail" class="input-field" placeholder="Email" required><br>
+      <input type="password" id="loginPassword" class="input-field" placeholder="Mot de passe" required><br>
+      <button class="btn" onclick="login()">Se connecter</button>
+      <div class="error-message" id="loginError"></div>
+      <span class="toggle-link" onclick="toggleForm()">Pas encore inscrit ? Créer un compte</span>
+    </div>
+
+    <!-- Formulaire d'Inscription -->
+    <div id="registerForm" style="display:none;">
+      <input type="email" id="registerEmail" class="input-field" placeholder="Email" required><br>
+      <input type="password" id="registerPassword" class="input-field" placeholder="Mot de passe" required><br>
+      <input type="password" id="registerConfirmPassword" class="input-field" placeholder="Confirmer le mot de passe" required><br>
+      <button class="btn" onclick="register()">S'inscrire</button>
+      <div class="error-message" id="registerError"></div>
+      <span class="toggle-link" onclick="toggleForm()">Déjà un compte ? Se connecter</span>
+    </div>
   </div>
 
   <script>
-    document.getElementById('loginForm').addEventListener('submit', function(e) {
-      e.preventDefault();
+    // Fonction pour basculer entre le formulaire de connexion et d'inscription
+    function toggleForm() {
+      const loginForm = document.getElementById('loginForm');
+      const registerForm = document.getElementById('registerForm');
+      const formTitle = document.getElementById('formTitle');
       
-      const email = document.getElementById('email').value;
-      const password = document.getElementById('password').value;
+      if (loginForm.style.display === 'none') {
+        loginForm.style.display = 'block';
+        registerForm.style.display = 'none';
+        formTitle.textContent = 'Connexion';
+      } else {
+        loginForm.style.display = 'none';
+        registerForm.style.display = 'block';
+        formTitle.textContent = 'Inscription';
+      }
+    }
+
+    // Fonction pour gérer la connexion
+    function login() {
+      const email = document.getElementById('loginEmail').value;
+      const password = document.getElementById('loginPassword').value;
+      const loginError = document.getElementById('loginError');
       
-      // Simuler une connexion (à remplacer par ton backend)
-      if (email === "test@example.com" && password === "password123") {
+      // Vérifier les informations de l'utilisateur dans le localStorage
+      const storedUser = JSON.parse(localStorage.getItem('user'));
+
+      if (storedUser && storedUser.email === email && storedUser.password === password) {
         alert("Connexion réussie !");
         // Rediriger vers la page principale
         window.location.href = "/index.html";  // Remplacer par la page d'accueil après connexion
       } else {
-        document.getElementById('errorMessage').textContent = "Identifiants incorrects.";
+        loginError.textContent = "Identifiants incorrects.";
       }
-    });
+    }
+
+    // Fonction pour gérer l'inscription
+    function register() {
+      const email = document.getElementById('registerEmail').value;
+      const password = document.getElementById('registerPassword').value;
+      const confirmPassword = document.getElementById('registerConfirmPassword').value;
+      const registerError = document.getElementById('registerError');
+
+      if (password !== confirmPassword) {
+        registerError.textContent = "Les mots de passe ne correspondent pas.";
+        return;
+      }
+
+      // Enregistrer l'utilisateur dans le localStorage
+      const user = {
+        email: email,
+        password: password
+      };
+      localStorage.setItem('user', JSON.stringify(user));
+
+      alert("Inscription réussie !");
+      // Basculer vers le formulaire de connexion après l'inscription
+      toggleForm();
+    }
   </script>
 
 </body>
